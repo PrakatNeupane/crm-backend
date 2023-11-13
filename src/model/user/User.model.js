@@ -12,4 +12,3 @@ const insertUser = (userObj) => {
 module.exports = {
   insertUser,
 };
-// dcCRbqYwCJi38Gs;

@@ -11,12 +11,14 @@ const UserSchema = new Schema({
   address: {
     type: String,
     maxlength: 100,
-    required: true,
   },
   phone: { type: Number, maxlength: 11 },
   email: { type: String, maxlength: 50, required: true },
-  password: { type: String, maxlength: 20, required: true },
+  password: { type: String, minlength: 8, maxlength: 500, required: true },
 });
+
+// Create an index explicitly to enforce uniqueness on the 'email' field
+UserSchema.index({ email: 1 }, { unique: true });
 
 module.exports = {
   UserSchema: mongoose.model("User", UserSchema),
