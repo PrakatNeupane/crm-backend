@@ -2,13 +2,14 @@ const express = require("express");
 const router = express.Router();
 const { route } = require("./ticket.router");
 
-const { hashPassword } = require("../helpers/bcrypt.helper");
+const { hashPassword, comparePassword } = require("../helpers/bcrypt.helper");
 const { insertUser } = require("../model/user/User.model");
+const { getUserByEmail } = require("../model/user/User.model");
 
 router.all("/", (req, res, next) => {
   next();
 });
-
+// Create a new user route
 router.post("/", async (req, res) => {
   const { name, company, address, phone, email, password } = req.body;
   try {
@@ -32,6 +33,30 @@ router.post("/", async (req, res) => {
     console.log(error);
     res.json({ status: "error", message: error.message });
   }
+});
+
+// User sign in Router
+router.post("/login", async (req, res) => {
+  const { email, password } = req.body;
+  // hash password and compare the db one
+  if (!email || !password) {
+    return res.json({ status: "error", message: "Invalid form submission" });
+  }
+
+  // get user email from db
+  const user = await getUserByEmail(email);
+
+  const passFromDb = user && user._id ? user.password : null;
+
+  if (!passFromDb) {
+    return res.json({ status: "error", message: "Invalid email or password" });
+  }
+
+  const result = await comparePassword(password, passFromDb);
+
+  console.log("result", result);
+
+  res.json({ status: "success", message: "Login Successful" });
 });
 
 module.exports = router;

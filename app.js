@@ -9,7 +9,7 @@ require("dotenv").config();
 const port = 3001;
 
 //handle api security
-app.use(helmet());
+// app.use(helmet());
 
 // handle cors error
 app.use(cors());
