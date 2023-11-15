@@ -5,6 +5,7 @@ const { route } = require("./ticket.router");
 const { hashPassword, comparePassword } = require("../helpers/bcrypt.helper");
 const { insertUser } = require("../model/user/User.model");
 const { getUserByEmail } = require("../model/user/User.model");
+const { createAccessJWT, createRefreshJWT } = require("../helpers/jwt.helper");
 
 router.all("/", (req, res, next) => {
   next();
@@ -54,9 +55,21 @@ router.post("/login", async (req, res) => {
 
   const result = await comparePassword(password, passFromDb);
 
+  if (!result) {
+    return res.json({ status: "error", message: "Invalid email or password!" });
+  }
+
+  const accessJWT = await createAccessJWT(user.email);
+  const refreshJWT = await createRefreshJWT(user.email);
+
   console.log("result", result);
 
-  res.json({ status: "success", message: "Login Successful" });
+  res.json({
+    status: "success",
+    message: "Login Successful",
+    accessJWT,
+    refreshJWT,
+  });
 });
 
 module.exports = router;
