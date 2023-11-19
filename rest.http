@@ -16,6 +16,6 @@ POST http://localhost:3001/v1/user/login
 Content-Type: application/json
 
  {
-   "email": "sdfasd@example.com",
+  "email": "sdfasd@example.com",
   "password": "securepassword"
 }
