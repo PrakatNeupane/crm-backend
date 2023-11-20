@@ -42,7 +42,9 @@ const storeUserRefreshJWT = (_id, token) => {
           $set: { "refreshJWT.token": token, "refreshJWT.addedAt": Date.now() },
         },
         { new: true }
-      );
+      )
+        .then((data) => resolve(data))
+        .catch((error) => console.log(error));
     } catch (error) {}
   });
 };
@@ -50,4 +52,5 @@ const storeUserRefreshJWT = (_id, token) => {
 module.exports = {
   insertUser,
   getUserByEmail,
+  storeUserRefreshJWT,
 };
