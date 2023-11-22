@@ -19,3 +19,7 @@ Content-Type: application/json
   "email": "sdfasd@example.com",
   "password": "securepassword"
 }
+
+### Get a user profile endpoint
+GET http://localhost:3001/v1/user
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNkZmFzZEBleGFtcGxlLmNvbSIsImlhdCI6MTcwMDY4ODU0MywiZXhwIjoxNzAwNzc0OTQzfQ.6h3RUyXWgrUlDOGuxJWfQphk65E9_9Jb7xQWxW8SNyk

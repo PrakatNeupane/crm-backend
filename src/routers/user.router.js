@@ -6,10 +6,25 @@ const { hashPassword, comparePassword } = require("../helpers/bcrypt.helper");
 const { insertUser } = require("../model/user/User.model");
 const { getUserByEmail } = require("../model/user/User.model");
 const { createAccessJWT, createRefreshJWT } = require("../helpers/jwt.helper");
+const { userAuthorization } = require("../middleware/authorization.middleware");
 
-router.all("/", (req, res, next) => {
+router.all("/", userAuthorization, (req, res, next) => {
   next();
 });
+
+// Get user profile router
+router.get("/", async (req, res) => {
+  const user = {
+    name: "John Doe",
+    company: "XYZ Corporation",
+    address: "123 Main St, City, Country",
+    phone: 1234567890,
+    email: "sdfasd@example.com",
+    password: "securepassword",
+  };
+  res.json({ user: req.userID });
+});
+
 // Create a new user route
 router.post("/", async (req, res) => {
   const { name, company, address, phone, email, password } = req.body;
