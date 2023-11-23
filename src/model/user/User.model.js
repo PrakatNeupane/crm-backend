@@ -49,8 +49,31 @@ const storeUserRefreshJWT = (_id, token) => {
   });
 };
 
+const getUserById = (_id) => {
+  return new Promise((resolve, reject) => {
+    if (!_id) {
+      reject(new Error("id is required"));
+      return;
+    }
+    try {
+      UserSchema.findOne({ _id })
+        .exec()
+        .then((data) => {
+          resolve(data);
+        })
+        .catch((error) => {
+          console.log(error);
+          reject(error);
+        });
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
 module.exports = {
   insertUser,
   getUserByEmail,
   storeUserRefreshJWT,
+  getUserById,
 };

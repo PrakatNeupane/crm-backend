@@ -11,7 +11,7 @@ const userAuthorization = async (req, res, next) => {
    * 3. extract user id
    * 4. get user profile based on id
    */
-  const decoded = verifyAccessJWT(authorization);
+  const decoded = await verifyAccessJWT(authorization);
   console.log(decoded);
   if (decoded.email) {
     const userId = await getJWT(authorization);
@@ -23,7 +23,7 @@ const userAuthorization = async (req, res, next) => {
     req.userId = userId;
     return next();
   }
-  return res.status(403).json({ message: "Access" });
+  return res.status(403).json({ message: "Forbidden" });
 };
 
 module.exports = {

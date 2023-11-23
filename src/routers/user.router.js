@@ -4,25 +4,19 @@ const { route } = require("./ticket.router");
 
 const { hashPassword, comparePassword } = require("../helpers/bcrypt.helper");
 const { insertUser } = require("../model/user/User.model");
-const { getUserByEmail } = require("../model/user/User.model");
+const { getUserByEmail, getUserById } = require("../model/user/User.model");
 const { createAccessJWT, createRefreshJWT } = require("../helpers/jwt.helper");
 const { userAuthorization } = require("../middleware/authorization.middleware");
 
-router.all("/", userAuthorization, (req, res, next) => {
+router.all("/", (req, res, next) => {
   next();
 });
 
 // Get user profile router
-router.get("/", async (req, res) => {
-  const user = {
-    name: "John Doe",
-    company: "XYZ Corporation",
-    address: "123 Main St, City, Country",
-    phone: 1234567890,
-    email: "sdfasd@example.com",
-    password: "securepassword",
-  };
-  res.json({ user: req.userID });
+router.get("/", userAuthorization, async (req, res) => {
+  const _id = req.userId;
+  const userProfile = await getUserById(_id);
+  res.json({ user: userProfile });
 });
 
 // Create a new user route
